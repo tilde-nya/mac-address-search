@@ -4,14 +4,6 @@ username = details.username
 password = details.password
 import telnetlib
 
-# def findmac(mac):
-#     con = telnetlib.Telnet()
-#     for i in switches:
-#         con.open(i, port=23)
-#         con.
-
-#         con.close()
-
 
 def convert(mac, format):
     """
@@ -52,8 +44,9 @@ tn.read_until(b">", timeout=5)
 tn.write(b"enable\r\n")
 tn.read_until(b"#", timeout=5)
 
-tn.write(("show mac address-table address " + convert("00-be-43-d8-3a-a0", "COLON") + "\r\b").encode("utf-8"))
-print(tn.read_until(b"Total MAC Addresses for this criterion: ", timeout=3).decode())
+tn.write(("show mac address-table address " + convert("00-00-00-00-00-00", "COLON") + "\r\b").encode("utf-8"))
+# print(tn.read_until(b"Total MAC Addresses for this criterion: ", timeout=3).decode().split("\n")[6:-2:])
+print(tn.expect([b"Total MAC Addresses for this criterion: ", b"Specified entry is NULL"], timeout=3))
 
 print(tn.read_eager().decode())
 tn.write(b"logout\r\n")
